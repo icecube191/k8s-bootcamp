@@ -1,0 +1,3 @@
+image:
+  repository: ghcr.io/icecube191/k8s-bootcamp/task-api
+  tag: latest
