@@ -33,3 +33,10 @@ spec:
               port: {{ .Values.api.port }}
             initialDelaySeconds: 10
             periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.api.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
