@@ -5,7 +5,7 @@ namespace: bootcamp2
  
 image:
   repository: ghcr.io/icecube191/k8s-bootcamp/task-api
-  tag: sha-e580775
+  tag: sha-77d46be
   pullPolicy: Always
  
 api:
@@ -35,4 +35,4 @@ ingress:
   enabled: true
   host: taskapi.local
   className: nginx
-  tag: sha-e580775
+  tag: sha-77d46be
