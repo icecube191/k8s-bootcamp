@@ -5,7 +5,7 @@ namespace: bootcamp2
  
 image:
   repository: ghcr.io/icecube191/k8s-bootcamp/task-api
-  tag: sha-deef908          # GitHub Actions updates this line on every push to main docker pull ghcr.io/icecube191/k8s-bootcamp/task-api:sha-deef908
+  tag: sha-0cb5070
   pullPolicy: Always
  
 api:
@@ -35,4 +35,4 @@ ingress:
   enabled: true
   host: taskapi.local
   className: nginx
-  tag: sha-deef908
+  tag: sha-0cb5070
