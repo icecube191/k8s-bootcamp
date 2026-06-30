@@ -1,0 +1,10 @@
+apiVersion: v2
+name: task-api
+description: FastAPI + PostgreSQL Task Manager — K8s Bootcamp 2
+type: application
+version: 0.1.0       # Chart version (increment when you change the chart)
+appVersion: "1.0.0"  # App version (informational)
+keywords:
+  - fastapi
+  - postgresql
+  - uvicorn

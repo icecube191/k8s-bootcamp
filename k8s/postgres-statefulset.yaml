@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: bootcamp2
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres-headless   # Must match the headless Service name
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "taskdb"
+            - name: POSTGRES_USER
+              value: "taskuser"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata  # subdirectory avoids mount issues
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "taskuser", "-d", "taskdb"]
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 6
+ 
+  # KEY DIFFERENCE vs Deployment: volumeClaimTemplates auto-creates
+  # one PVC per pod replica. Pod "postgres-0" gets "postgres-data-postgres-0".
+  # PVCs persist even if the pod is deleted. Deployment would need a separate PVC.
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi

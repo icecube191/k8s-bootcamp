@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: task-api-ingress
+  namespace: bootcamp2
+  annotations:
+    # Strip the /api prefix before forwarding to the app
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  ingressClassName: nginx      # Tells K8s which Ingress Controller to use
+  rules:
+    - host: taskapi.local      # Add this to C:\Windows\System32\drivers\etc\hosts
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: task-api-service
+                port:
+                  number: 80

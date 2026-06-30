@@ -1,3 +1,37 @@
+# Default values — override with: helm install ... --set key=value
+# or: helm install ... -f custom-values.yaml
+ 
+namespace: bootcamp2
+ 
 image:
   repository: ghcr.io/icecube191/k8s-bootcamp/task-api
-  tag: latest
+  tag: latest          # GitHub Actions updates this line on every push to main docker pull ghcr.io/icecube191/k8s-bootcamp/task-api:sha-deef908
+  pullPolicy: Always
+ 
+api:
+  replicas: 2
+  port: 8000
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+ 
+postgres:
+  database: taskdb
+  user: taskuser
+  storage: 5Gi
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+ 
+ingress:
+  enabled: true
+  host: taskapi.local
+  className: nginx
